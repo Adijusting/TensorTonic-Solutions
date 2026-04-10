@@ -5,16 +5,16 @@ def adam_step(param, grad, m, v, t, lr=1e-3, beta1=0.9, beta2=0.999, eps=1e-8):
     One Adam optimizer update step.
     Return (param_new, m_new, v_new).
     """
-    param, grad = np.array(param), np.array(grad)
-    m,v = np.array(m), np.array(v)
+    param, grad, m = np.asarray(param), np.asarray(grad), np.asarray(m)
+    v, t = np.asarray(v), np.asarray(t)
 
-    m_t = beta1*m+(1-beta1)*grad
-    v_t = beta2*v+(1-beta2)*(grad**2)
+    m_t = beta1*m + (1-beta1)*grad
+    v_t = beta2*v + (1-beta2)*(grad**2)
 
-    m_hat = m_t/(1-beta1**t)
-    v_hat = v_t/(1-beta2**t)
+    m_hat = m_t / (1-beta1**t)
+    v_hat = v_t / (1-beta2**t)
 
-    param_t = param-lr*m_hat/(np.sqrt(v_hat)+eps)
+    param_update = param - lr * ((m_hat) / (np.sqrt(v_hat) + eps))
 
-    return param_t.tolist(), m_t.tolist(), v_t.tolist()
+    return param_update.tolist(), m_t.tolist(), v_t.tolist()
     pass
